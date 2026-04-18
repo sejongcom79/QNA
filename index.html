@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gospel Master Intelligence: 복음 지식 대백과</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Pretendard:wght@400;600;800&display=swap');
+        body { font-family: 'Pretendard', sans-serif; background-color: #fcfaf8; scroll-behavior: smooth; }
+        .serif { font-family: 'Noto Serif KR', serif; }
+        .result-card { transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); border: 1px solid #f1f5f9; }
+        .result-card:hover { transform: translateY(-12px); box-shadow: 0 40px 60px -15px rgba(0, 0, 0, 0.08); border-color: #fb923c; }
+        .highlight { background-color: #ffedd5; color: #9a3412; padding: 0.1rem 0.3rem; border-radius: 0.3rem; font-weight: bold; }
+        .category-badge { font-size: 10px; font-weight: 900; letter-spacing: 0.1em; padding: 4px 12px; border-radius: 99px; text-transform: uppercase; }
+        .description-text { line-height: 1.9; color: #4b5563; font-size: 17px; }
+        .description-text b { color: #111827; }
+    </style>
+</head>
+<body class="text-slate-900 min-h-screen flex flex-col">
+
+    <nav class="bg-white/90 backdrop-blur-xl border-b border-orange-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+            <div class="text-xl font-black text-slate-900 serif flex items-center gap-3">
+                <span class="bg-orange-600 text-white w-10 h-10 flex items-center justify-center rounded-2xl shadow-lg text-xl font-serif">†</span>
+                <span>복음 지식 마스터 탐색기</span>
+            </div>
+            <div class="hidden md:flex gap-2">
+                <span class="category-badge bg-blue-50 text-blue-600">인물 & 사건</span>
+                <span class="category-badge bg-emerald-50 text-emerald-600">상징 & 사물</span>
+                <span class="category-badge bg-purple-50 text-purple-600">복음 용어</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-5xl w-full mx-auto px-6 py-20">
+        <header class="text-center mb-16">
+            <h2 class="text-5xl font-bold text-slate-900 mb-6 serif tracking-tight">당신이 찾는 <span class="text-orange-600 italic">복음의 모든 것</span></h2>
+            <p class="text-slate-500 text-xl leading-relaxed max-w-2xl mx-auto font-medium">
+                4대 복음서의 방대한 데이터와 성경 공부 모임의 나눔을 통합한 지식 창고입니다. <br>
+                단어 검색을 통해 성경 속에 감춰진 보화를 발견해 보세요.
+            </p>
+        </header>
+
+        <div class="relative max-w-3xl mx-auto mb-20">
+            <div class="absolute inset-y-0 left-8 flex items-center pointer-events-none text-slate-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+            <input type="text" id="search-input" 
+                class="w-full bg-white border-2 border-orange-50 rounded-[2.5rem] py-7 pl-20 pr-32 shadow-2xl focus:outline-none focus:border-orange-500 transition-all text-xl font-medium" 
+                placeholder="이사야, 바울, 혈루증, 나귀, 드숨나감, 반석...">
+            <button onclick="performSearch()" class="absolute right-4 top-3.5 bg-slate-900 text-white px-10 py-4 rounded-[2rem] font-black hover:bg-orange-600 transition-all shadow-xl">
+                탐색
+            </button>
+        </div>
+
+        <div id="results-area" class="space-y-16 mb-40">
+            </div>
+    </main>
+
+    <footer class="bg-slate-900 py-16 text-center">
+        <p class="text-slate-500 text-xs font-black uppercase tracking-[0.5em] mb-4">The Complete Gospel Master Database</p>
+        <p class="text-slate-600 text-[10px]">교수님과 동료들의 소중한 성경 공부 통찰이 담긴 통합 지식 엔진입니다.</p>
+    </footer>
+
+    <script>
+        const gospelsMasterDB = [
+            // --- [인물 및 집단] ---
+            { cat: "인물", n: "사도 바울 (Paul)", b: "로마서/사도행전", ch: "전체", v: "롬 11:1", txt: "나도 이스라엘인이요 아브라함의 씨에서 난 자요 베냐민 지파라", g: "<b>나눔 포인트:</b> 바울은 베냐민 지파(물어뜯는 이리) 출신입니다. 핍박자였던 그가 이방인의 사도로 변화된 것은 복음이 가진 '재창조'의 능력을 보여줍니다.\n<b>복음적 의미:</b> 어떤 과거를 가졌더라도 복음 안에서는 하나님의 위대한 도구로 쓰임받을 수 있습니다.", kw: ["바울", "사울", "베냐민", "이리", "사도", "회개", "핍박", "전도"] },
+            { cat: "인물", n: "혈루증 여인", b: "마가복음", ch: "5장", v: "5:34", txt: "딸아 네 믿음이 너를 구원하였으니 평안히 가라", g: "<b>나눔 포인트:</b> 12년간 소외되었던 여인이 주님의 옷자락을 만져 치유받았습니다.\n<b>복음적 의미:</b> 절망의 끝에서 주님을 붙드는 간절함이 복음의 능력을 끌어냅니다. 주님은 그녀를 '딸'이라 부르시며 영적 신분을 즉시 회복시켜 주셨습니다.", kw: ["혈루증", "여인", "옷자락", "믿음", "치유", "평안", "딸", "만짐"] },
+            { cat: "인물", n: "이사야 (Isaiah)", b: "마태복음", ch: "1, 4, 12장", v: "1:22", txt: "보라 처녀가 잉태하여 아들을 낳을 것이요 그의 이름은 임마누엘이라 하리라", g: "<b>업적:</b> 메시아의 탄생과 고난을 700년 전 예언한 대선지자입니다.\n<b>복음적 의미:</b> 이사야의 예언 성취는 복음이 하나님의 정교하고 신실한 계획임을 증명합니다. '임마누엘'은 복음의 핵심 약속입니다.", kw: ["이사야", "선지자", "예언", "약속", "성취", "임마누엘", "영광"] },
+            { cat: "인물", n: "베드로 (Peter)", b: "요한복음", ch: "21장", v: "21:15", txt: "요한의 아들 시몬아 네가 나를 사랑하느냐", g: "<b>사건:</b> 수제자였으나 세 번 부인하며 실패를 경험했습니다.\n<b>복음적 의미:</b> 주님은 실패한 베드로를 다시 찾아와 사랑을 확인하시고 사명을 주셨습니다. 복음은 우리를 다시 일으켜 세우는 용서의 힘입니다.", kw: ["베드로", "시몬", "실패", "사랑", "회복", "조반", "부인", "수제자"] },
+            { cat: "인물", n: "삭개오 (Zacchaeus)", b: "누가복음", ch: "19장", v: "19:5", txt: "삭개오야 속히 내려오라 내가 오늘 네 집에 유하여야 하겠다", g: "<b>복음적 의미:</b> 소외된 세리장의 이름을 먼저 불러주신 주님. 복음은 우리를 개인적으로 찾아오시는 하나님의 사랑입니다.", kw: ["삭개오", "세리", "나무", "구원", "이름", "친구", "변화"] },
+
+            // --- [상징 및 사물] ---
+            { cat: "상징", n: "나귀 (Donkey)", b: "마태복음", ch: "21장", v: "21:5", txt: "그는 겸손하여 나귀... 짐승의 새끼를 탔도다", g: "<b>나눔 포인트:</b> 매여 있던 나귀(죄인인 우리)를 풀어 주께서 쓰시는 존재로 만드셨습니다.\n<b>복음적 가치:</b> 우리에게 '의의 겉옷'을 입히시고 영원한 예루살렘으로 인도하시는 주님의 겸손한 왕권을 상징합니다.", kw: ["나귀", "나귀새끼", "겸손", "겉옷", "예루살렘", "결박", "쓰임받음"] },
+            { cat: "상징", n: "드숨나감 (Secret Reveal)", b: "마가복음", ch: "4장", v: "4:22", txt: "드러내려 하지 않고는 숨긴 것이 없고 나타내려 하지 않고는 감추인 것이 없느니라", g: "<b>나눔 포인트:</b> 하나님의 진리는 적절한 때에 반드시 온전하게 드러납니다.\n<b>복음적 가치:</b> 정직하게 주님 앞에 나아가는 자에게 복음의 빛은 모든 비밀을 밝히 비춰주십니다.", kw: ["드숨나감", "비밀", "드러남", "진리", "빛", "감추인것"] },
+            { cat: "상징", n: "반석 (The Rock)", b: "마태복음", ch: "16장", v: "16:18", txt: "내가 이 반석 위에 내 교회를 세우리니", g: "<b>정의:</b> '주는 그리스도시요 하나님의 아들이시다'라는 확고한 신앙 고백입니다.\n<b>복음적 가치:</b> 모래알 같은 세상 가치관 속에서 변치 않는 주님의 말씀 위에 삶을 세우는 것이 진짜 복음적 신앙입니다.", kw: ["반석", "바위", "기초", "교회", "고백", "믿음", "안전", "튼튼"] },
+            { cat: "음식", n: "빵 (생명의 떡)", b: "요한복음", ch: "6장", v: "6:35", txt: "나는 생명의 떡이니 내게 오는 자는 결코 주리지 아니할 터이요", g: "<b>복음적 의미:</b> 육신의 배고픔을 넘어 영혼의 근원적인 결핍을 영원히 해결하시는 예수님이 곧 복음의 양식입니다.", kw: ["빵", "떡", "양식", "오병이어", "생명", "결핍", "만족"] },
+            { cat: "사물", n: "효모 (누룩)", b: "마태복음", ch: "13장", v: "13:33", txt: "가루 서 말 속에 갖다 넣어 전부 부풀게 한 누룩과 같으니라", g: "<b>복음적 의미:</b> 복음은 작게 시작되나 결국 인생 전체를 거룩하게 변화시키는 강력한 확장성을 가집니다.", kw: ["효모", "누룩", "변화", "천국", "확장", "부풀림"] },
+
+            // --- [용어 및 상황] ---
+            { cat: "용어", n: "자복 (Confession)", b: "마태복음", ch: "3장", v: "3:6", txt: "자기들의 죄를 자복하고 요단 강에서 그에게 세례를 받더니", g: "<b>복음적 의미:</b> 정직한 고백 위에 은혜가 임합니다. 하나님은 우리가 죄인임을 인정할 때 용서와 치유의 복음을 쏟아주십니다.", kw: ["자복", "고백", "정직", "용서", "회개", "세례", "뉘우침"] },
+            { cat: "상황", n: "믿음의 점검", b: "누가복음", ch: "8장", v: "8:25", txt: "예수께서 이르시되 너희 믿음이 어디 있느냐 하시니", g: "<b>나눔 포인트:</b> 풍랑 속에서 던지신 이 질문은 우리 삶의 우선순위를 확인하는 과정입니다.\n<b>복음적 처방:</b> 두려움이 엄습할 때, 내 안에 계신 주님이 만물을 다스리시는 분임을 다시 신뢰하는 것이 진짜 믿음입니다.", kw: ["믿음", "점검", "풍랑", "두려움", "신뢰", "우선순위", "질문"] },
+            { cat: "상황", n: "번아웃 (쉼)", b: "마태복음", ch: "11장", v: "11:28", txt: "수고하고 무거운 짐 진 자들아 다 내게로 오라 내가 너희를 쉬게 하리라", g: "<b>복음적 처방:</b> 무언가 해내야 한다는 압박을 내려놓으세요. 복음은 '존재 그대로' 주님 품에 안기는 진정한 안식을 선물합니다.", kw: ["번아웃", "지침", "피로", "스트레스", "압박", "쉼", "휴식", "무기력"] }
+        ];
+
+        function renderResults(data, query = "") {
+            const resultsArea = document.getElementById('results-area');
+            resultsArea.innerHTML = "";
+            
+            if (data.length === 0) {
+                resultsArea.innerHTML = `<div class="text-center py-24 bg-white rounded-[4rem] border border-orange-50"><p class="text-slate-400 font-bold serif italic text-2xl">"${query}"에 대한 기록을 찾고 있습니다.</p></div>`;
+                return;
+            }
+
+            resultsArea.innerHTML = `<p class="text-sm font-black text-slate-400 uppercase tracking-widest px-4 mb-10">Connected Wisdom: ${data.length} Records</p>`;
+            
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "result-card bg-white p-12 md:p-16 rounded-[4rem] shadow-xl shadow-slate-200/40 relative overflow-hidden mb-12";
+                
+                let badgeColor = "bg-orange-100 text-orange-600";
+                if(item.cat === "인물") badgeColor = "bg-blue-100 text-blue-600";
+                if(item.cat === "상징" || item.cat === "음식") badgeColor = "bg-emerald-100 text-emerald-600";
+                if(item.cat === "용어") badgeColor = "bg-purple-100 text-purple-600";
+                if(item.cat === "상황") badgeColor = "bg-rose-100 text-rose-600";
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-4 mb-10">
+                        <span class="category-badge ${badgeColor}">${item.cat}</span>
+                        <span class="text-slate-200">/</span>
+                        <h3 class="text-4xl font-bold text-slate-900 serif">${highlightText(item.n, query)}</h3>
+                    </div>
+                    <div class="mb-12">
+                        <div class="bg-stone-50 p-10 rounded-[3rem] border-l-8 border-orange-200">
+                            <p class="text-[11px] font-black text-orange-300 mb-4 uppercase tracking-[0.3em]">${item.b} | ${item.v}</p>
+                            <p class="text-[24px] text-slate-800 font-bold serif leading-relaxed italic">"${highlightText(item.txt, query)}"</p>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-3">
+                            <span class="w-12 h-px bg-orange-100"></span>
+                            <h4 class="text-xs font-black text-orange-900 uppercase tracking-widest">Gospel Insight</h4>
+                        </div>
+                        <div class="description-text font-medium pl-2">${highlightText(item.g.replace(/\n/g, '<br>'), query)}</div>
+                    </div>
+                `;
+                resultsArea.appendChild(card);
+            });
+        }
+
+        function performSearch() {
+            const query = document.getElementById('search-input').value.trim();
+            if (!query) {
+                renderResults(gospelsMasterDB);
+                return;
+            }
+            const matches = gospelsMasterDB.filter(item => 
+                item.n.toLowerCase().includes(query.toLowerCase()) || 
+                item.kw.some(k => query.includes(k) || k.includes(query)) ||
+                item.g.includes(query) || item.txt.includes(query)
+            );
+            renderResults(matches, query);
+        }
+
+        function highlightText(text, query) {
+            if (!query) return text;
+            const re = new RegExp(`(${query})`, "gi");
+            return text.replace(re, `<span class="highlight">$1</span>`);
+        }
+
+        // 페이지 로드 시 자동으로 모든 데이터 표시
+        window.onload = () => renderResults(gospelsMasterDB);
+
+        document.getElementById('search-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+    </script>
+</body>
+</html>
